@@ -1,0 +1,20 @@
+{
+  "name": "session-state",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "git": "git add . && git commit -m \"Done\" && git push",
+    "deploy": "git add . && git commit -m \"Done\" && git push heroku"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.4.2"
+  }
+}
