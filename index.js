@@ -1,8 +1,6 @@
 const app = require('express')()
 const jsonParser = require('body-parser').json()
-
-const { addItem, postOneScream } = require('./cart')
-const sessionId = require('./sessionId')
+const { addItem } = require('./cart')
 
 app.use(jsonParser)
 

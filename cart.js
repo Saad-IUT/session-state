@@ -21,12 +21,24 @@ exports.addItem = async (req, res) => {
   sessionRef
     .get()
     .then(doc => {
+      //new session
       if (!doc.exists) {
-        sessionRef.set({ [req.params.item]: 1 })
+        return sessionRef.set({ [req.params.item]: 1 })
       }
-      return res.json({ message: 'found' })
+      // old session old item
+      if (doc.data()[req.params.item]) {
+        return sessionRef.update({
+          [req.params.item]: doc.data()[req.params.item] + 1,
+        })
+      }
+      // old session new item
+      sessionRef.update({
+        [req.params.item]: 1,
+      })
+      return res.status(201).json({ message: 'Item added successfully' })
     })
     .catch(err => {
       console.error(err)
     })
 }
+
