@@ -1,8 +1,8 @@
 const { db } = require('./admin')
 
 // Add Order
-exports.addItem = (req, res) => {
-  let session = getSession(req, res)
+exports.addItem = async (req, res) => {
+  let session = await getSession(req, res)
   console.log(session)
 }
 
