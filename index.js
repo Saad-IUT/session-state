@@ -1,13 +1,14 @@
 const app = require('express')()
 const jsonParser = require('body-parser').json()
 
-const { addItem } = require('./cart')
+const { addItem, postOneScream } = require('./cart')
 const sessionId = require('./sessionId')
 
-app.use(jsonParser, sessionId)
+app.use(jsonParser)
 
 // Cart routes
-app.post('/cart/add/:item', addItem)
+app.post('/cart/add/:item', sessionId, addItem)
+app.post('/test', postOneScream)
 // app.delete('/cart/remove/:item', removeItem)
 // app.delete('/cart/decrease/:item', decreaseItem)
 // app.get('/cart', getCart)
