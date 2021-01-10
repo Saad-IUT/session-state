@@ -1,13 +1,25 @@
 const { db } = require('./admin')
-const { checkSession } = require('./validators')
 
 // Add Order
 exports.addItem = (req, res) => {
-  let sessionId
+  let currentSession = getSession(req, res)
+  console.log(currentSession)
+}
+
+const getSession = (req, res) => {
   if (res.getHeader('session-id')) {
-    sessionId = res.getHeader('session-id')
+    return res.getHeader('session-id')
   } else if (req.headers['session-id']) {
-    sessionId = req.headers['session-id']
-  } else console.error('Error while retrieving session')
- 
+    return req.headers['session-id']
+  } else {
+    console.error('Error while retrieving session')
+  }
+}
+
+const validateSession = currentSession => {
+  db.doc(`/sessions/${currentSession}`)
+    .get()
+    .then(doc => {
+      return doc.exists
+    })
 }

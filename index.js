@@ -4,10 +4,10 @@ const jsonParser = require('body-parser').json()
 const { addItem } = require('./cart')
 const sessionId = require('./sessionId')
 
-app.use(jsonParser)
+app.use(jsonParser, sessionId)
 
 // Cart routes
-app.post('/cart/add/:item', sessionId, addItem)
+app.post('/cart/add/:item', addItem)
 // app.delete('/cart/remove/:item', removeItem)
 // app.delete('/cart/decrease/:item', decreaseItem)
 // app.get('/cart', getCart)
