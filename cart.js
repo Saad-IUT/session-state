@@ -1,48 +1,32 @@
 const { db } = require('./admin')
+const file = require('./sessionId.json')
+const { v4: uuidv4 } = require('uuid')
+const fs = require('fs')
 
-// Add Order
+// Add Item
 exports.addItem = async (req, res) => {
-  let session = await getSession(req, res)
-  console.log(session)
-  db.doc(`sessions/${session}`)
+  let sessionId
+  sessionId = file['session-id']
+  if (sessionId) {
+    req.headers['session-id'] = sessionId
+  } else {
+    sessionId = uuidv4()
+    res.setHeader('session-id', sessionId)
+    fs.writeFileSync('sessionId.json', `{"session-id":"${sessionId}"}`, err => {
+      if (err) return err
+      console.log('Saved!')
+    })
+  }
+  const sessionRef = db.doc(`sessions/${sessionId}`)
+  sessionRef
     .get()
     .then(doc => {
       if (!doc.exists) {
-        console.log('not found')
-        return res.json({ message: 'not found' })
+        sessionRef.set({ [req.params.item]: 1 })
       }
-      console.log('found')
       return res.json({ message: 'found' })
     })
     .catch(err => {
       console.error(err)
     })
-}
-exports.postOneScream = (req, res) => {
-  const newScream = {
-    createdAt: new Date().toISOString(),
-    likeCount: 0,
-    commentCount: 0,
-  }
-
-  db.collection('screams')
-    .add(newScream)
-    .then(doc => {
-      const resScream = newScream
-      resScream.screamId = doc.id
-      res.json(resScream)
-    })
-    .catch(err => {
-      res.status(500).json({ error: 'something went wrong' })
-      console.error(err)
-    })
-}
-const getSession = (req, res) => {
-  if (res.getHeader('session-id')) {
-    return res.getHeader('session-id')
-  } else if (req.headers['session-id']) {
-    return req.headers['session-id']
-  } else {
-    console.error('Error while retrieving session')
-  }
 }

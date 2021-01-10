@@ -7,8 +7,8 @@ const sessionId = require('./sessionId')
 app.use(jsonParser)
 
 // Cart routes
-app.post('/cart/add/:item', sessionId, addItem)
-app.post('/test', postOneScream)
+app.post('/cart/add/:item', addItem)
+// app.post('/test', postOneScream)
 // app.delete('/cart/remove/:item', removeItem)
 // app.delete('/cart/decrease/:item', decreaseItem)
 // app.get('/cart', getCart)
