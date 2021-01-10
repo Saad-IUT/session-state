@@ -2,8 +2,8 @@ const { db } = require('./admin')
 
 // Add Order
 exports.addItem = (req, res) => {
-  let currentSession = getSession(req, res)
-  console.log(currentSession)
+  let session = getSession(req, res)
+  console.log(session)
 }
 
 const getSession = (req, res) => {
@@ -14,12 +14,4 @@ const getSession = (req, res) => {
   } else {
     console.error('Error while retrieving session')
   }
-}
-
-const validateSession = currentSession => {
-  db.doc(`/sessions/${currentSession}`)
-    .get()
-    .then(doc => {
-      return doc.exists
-    })
 }

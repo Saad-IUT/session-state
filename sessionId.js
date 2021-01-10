@@ -7,14 +7,12 @@ module.exports = (req, res, next) => {
   sessionId = file['session-id']
   if (sessionId) {
     req.headers['session-id'] = sessionId
-    res.status(200).json({ 'session-id': sessionId })
   } else {
-    res.setHeader('session-id', uuidv4())
-    sessionId = res.getHeader('session-id')
-    res.status(201).json({ 'session-id': sessionId })
+    sessionId = uuidv4()
+    res.setHeader('session-id', sessionId)
   }
 
-  fs.writeFile('sessionId.json', `{"session-id":"${sessionId}"}`, err => {
+  fs.writeFileSync('sessionId.json', `{"session-id":"${sessionId}"}`, err => {
     if (err) return err
     console.log('Saved!')
   })
